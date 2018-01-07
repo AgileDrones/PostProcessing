@@ -133,7 +133,8 @@ namespace UnityEngine.PostProcessing
         {
             return model.settings.mode == Mode.MotionVectors
                    ? CameraEvent.BeforeImageEffects
-                   : CameraEvent.BeforeImageEffectsOpaque;
+                   : CameraEvent.AfterEverything;
+            //: CameraEvent.BeforeImageEffectsOpaque;
         }
 
         public override string GetName()
