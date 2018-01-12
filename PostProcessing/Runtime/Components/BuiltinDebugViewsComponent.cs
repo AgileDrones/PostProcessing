@@ -131,10 +131,15 @@ namespace UnityEngine.PostProcessing
 
         public override CameraEvent GetCameraEvent()
         {
-            return model.settings.mode == Mode.MotionVectors
-                   ? CameraEvent.BeforeImageEffects
-                   : CameraEvent.AfterEverything;
-            //: CameraEvent.BeforeImageEffectsOpaque;
+            // Fixes bugs with transparencies
+            return CameraEvent.BeforeImageEffects;
+
+            // Original code, where transparencies would show up as artifacts in depth render.
+            // return model.settings.mode == Mode.MotionVectors
+            //       ? CameraEvent.BeforeImageEffects
+            //       : CameraEvent.BeforeImageEffectsOpaque;
+
+            
         }
 
         public override string GetName()
