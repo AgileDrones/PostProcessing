@@ -29,10 +29,17 @@ Shader "Hidden/Post FX/Builtin Debug Views"
         {
             float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, UnityStereoScreenSpaceUVAdjust(i.uv, _CameraDepthTexture_ST));
 			// Old value that outputs between [0,1]
-            // depth = Linear01Depth(depth) * _DepthScale;
+			// NOTE: There seems to be a scaling factor of 4 on the depth (plus some non-linearity) here....
+            depth = Linear01Depth(depth)*_DepthScale;
+			//depth = depth * 4.0;
+			//depth = GammaToLinearSpace(depth);
             
-			depth = LinearEyeDepth(depth) * _DepthScale;
+			//depth = LinearEyeDepth(depth) / (_DepthScale);
+			//depth = DECODE_EYEDEPTH(depth)/ _DepthScale;
             float3 d = depth.xxx;
+
+			// Fix 4x scaling
+			d = d*4.0f;
             
         #if !UNITY_COLORSPACE_GAMMA
             d = GammaToLinearSpace(d);
