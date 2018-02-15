@@ -28,7 +28,10 @@ Shader "Hidden/Post FX/Builtin Debug Views"
         float4 FragDepth(VaryingsDefault i) : SV_Target
         {
             float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, UnityStereoScreenSpaceUVAdjust(i.uv, _CameraDepthTexture_ST));
-            depth = Linear01Depth(depth) * _DepthScale;
+			// Old value that outputs between [0,1]
+            // depth = Linear01Depth(depth) * _DepthScale;
+            
+			depth = LinearEyeDepth(depth) * _DepthScale;
             float3 d = depth.xxx;
             
         #if !UNITY_COLORSPACE_GAMMA
